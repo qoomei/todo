@@ -42,7 +42,7 @@ function App() {
       </div>
       <div className="container-fluid fixed-bottom d-flex align-items-center footer">.X.X.</div>
       <AddTask modalObj={editTaskModalObj} />
-      <EditTask modalObj={editTaskModalObj} title="new" />
+      <EditTask modalObj={editTaskModalObj} title="追加" />
     </div>
   )
 }
