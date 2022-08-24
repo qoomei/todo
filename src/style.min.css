@@ -1,1 +1,1 @@
-/*# sourceMappingURL=style.min.css.map */
+.header{height:50px;background-color:#ab5f39;color:#fff}.main{top:50px;height:calc(var(--vh)*100 - 50px - 50px);overflow-wrap:break-word;overflow-y:scroll}.footer{height:50px;background-color:#c1272d;color:#fff}.add-task{bottom:70px;left:unset;right:20px;cursor:pointer}.add-task button.btn:focus{box-shadow:none}.add-task svg{padding:10px;border-radius:30px;background-color:#07f}/*# sourceMappingURL=style.min.css.map */

@@ -1,2 +1,47 @@
 @charset "utf-8";
 
+$color-qoomei: #AB5F39;
+$color-button: #0077ff; // ボタン背景色
+$height-header: 50px;
+$height-footer: 50px;
+
+// ヘッダー
+.header {
+  height: $height-header;
+  background-color: $color-qoomei;
+  color: white;
+}
+
+// メイン
+.main {
+  top: $height-header;
+  height: calc((var(--vh) * 100) - $height-header - $height-footer);
+  overflow-wrap: break-word;
+  overflow-y: scroll;
+}
+
+// フッター
+.footer {
+  height: $height-footer;
+  background-color: #C1272D;
+  color: white;
+}
+
+// 追加アイコン
+.add-task {
+  bottom: $height-footer + 20px;
+  left: unset;
+  right: 20px;
+  cursor: pointer;
+
+  // 追加ボタンの影なし
+  button.btn:focus {
+    box-shadow: none;
+  }
+
+  svg {
+    padding: 10px;
+    border-radius: 30px;
+    background-color: $color-button;
+  }
+}
