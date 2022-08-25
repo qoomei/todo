@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { CirclePicker } from 'react-color'
 
 function EditTask(props) {
-  // タスク
-  const [task, setTask] = useState('')
+  // タスク名
+  const [taskName, setTaskName] = useState('')
   // 入力チェック
   const [validated, setValidated] = useState('')
   // submitボタン
@@ -35,12 +35,17 @@ function EditTask(props) {
       return
     }
 
+    props.setTask((prev) => {
+      const newTask = [...prev]
+      newTask.push({ task: taskName, color: color })
+      return newTask
+    })
     props.modalObj.hide()
   }
 
   // タスク名変更時
-  const onChangeTask = (e) => {
-    setTask(e.target.value)
+  const onChangeTaskName = (e) => {
+    setTaskName(e.target.value)
   }
 
   return (
@@ -62,8 +67,8 @@ function EditTask(props) {
                   type="text"
                   className="form-control"
                   placeholder="名前を入力"
-                  value={task}
-                  onChange={onChangeTask}
+                  value={taskName}
+                  onChange={onChangeTaskName}
                   required
                 />
                 <div className="invalid-feedback">項目名を入力して下さい</div>

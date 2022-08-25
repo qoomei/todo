@@ -45,3 +45,10 @@ $height-footer: 50px;
     background-color: $color-button;
   }
 }
+
+// タスクのラベルカラー
+.color-label {
+  border-radius: 10px 0 0 10px;
+  margin-bottom: 10px;
+  width: 10px;
+}
