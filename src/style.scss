@@ -2,8 +2,13 @@
 
 $color-qoomei: #AB5F39;
 $color-button: #0077ff; // ボタン背景色
+$color-main-bg: #FFE6C8;  // main背景色
 $height-header: 50px;
 $height-footer: 50px;
+
+body {
+  background-color: $color-main-bg;
+}
 
 // ヘッダー
 .header {
@@ -14,6 +19,7 @@ $height-footer: 50px;
 
 // メイン
 .main {
+  padding-top: 10px;
   top: $height-header;
   height: calc((var(--vh) * 100) - $height-header - $height-footer);
   overflow-wrap: break-word;
@@ -51,4 +57,9 @@ $height-footer: 50px;
   border-radius: 10px 0 0 10px;
   margin-bottom: 10px;
   width: 10px;
+}
+
+// タスク名
+.task-name {
+  margin: 0 10px;
 }
