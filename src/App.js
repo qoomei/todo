@@ -1,10 +1,10 @@
-import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import AddTask from './components/AddTask'
 import EditTask from './components/EditTask'
 import { Modal } from 'bootstrap/dist/js/bootstrap.esm.min.js'
 import { ReactSortable } from 'react-sortablejs'
 import styled from 'styled-components'
+import { AiOutlineMenu } from 'react-icons/ai'
 import './style.min.css'
 
 const setVh = () => {
@@ -14,12 +14,11 @@ const setVh = () => {
 window.addEventListener('load', setVh)
 window.addEventListener('resize', setVh)
 
-const StyledBlockWrapper = styled.div`
+const StyledTaskBody = styled.div`
   position: relative;
   background: white;
-  padding: 10px 20px;
+  padding: 8px 16px;
   margin-bottom: 10px;
-  border: 1px solid lightgray;
   border-left-width: 0;
   border-radius: 0 10px 10px 0;
   display: flex;
@@ -39,12 +38,6 @@ const sortableOptions = {
 function App() {
   const [task, setTask] = useState([])
   const [editTaskModalObj, setEditTaskModalObj] = useState(null)
-  const [status, setStatus] = useState('progress')
-  const statusClassNames = {
-    pazzle: true,
-    progress: status === 'progress',
-    creared: status === 'creared',
-  }
 
   useEffect(() => {
     const editTaskModal = document.getElementById('editTaskModal')
@@ -55,16 +48,20 @@ function App() {
     <div className="App">
       <div className="container-fluid fixed-top d-flex align-items-center header">.X.X.</div>
       <div className="container fixed-top main">
-        <div className={classNames(statusClassNames)}></div>
         <ReactSortable list={task} setList={setTask} {...sortableOptions}>
           {task.map((item, index) => {
             return (
-              <div className="d-flex">
+              <div className="d-flex" key={index}>
                 <div className="color-label" style={{ backgroundColor: item.color }}></div>
-                <StyledBlockWrapper className="block" key={index}>
-                  <div>{item.task}</div>
-                  <div className="my-handle">::</div>
-                </StyledBlockWrapper>
+                <StyledTaskBody className="block">
+                  <div className="d-flex align-items-center">
+                    <input type="checkbox" />
+                    <div className="task-name">{item.task}</div>
+                  </div>
+                  <div className="my-handle">
+                    <AiOutlineMenu size={32} color={'#999999'} />
+                  </div>
+                </StyledTaskBody>
               </div>
             )
           })}
