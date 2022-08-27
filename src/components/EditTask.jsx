@@ -5,12 +5,12 @@ import { CirclePicker } from 'react-color'
 function EditTask(props) {
   // タスク名
   const [taskName, setTaskName] = useState('')
-  // 入力チェック
-  const [validated, setValidated] = useState('')
-  // submitボタン
-  const [submitButton] = useState(props.title)
   // color
   const [color, setColor] = useState('#f44336')
+  // submitボタン
+  const [submitButton] = useState(props.title)
+  // 入力チェック
+  const [validated, setValidated] = useState('')
 
   // ダイアログタイトル
   const [title] = useState('項目の' + props.title)
@@ -37,7 +37,7 @@ function EditTask(props) {
 
     props.setTask((prev) => {
       const newTask = [...prev]
-      newTask.push({ task: taskName, color: color })
+      newTask.push({ task: taskName, color: color, checked: false })
       return newTask
     })
     props.modalObj.hide()
