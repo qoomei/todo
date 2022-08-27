@@ -44,6 +44,22 @@ function App() {
     setEditTaskModalObj(new Modal(editTaskModal))
   }, [])
 
+  // タスククリック時
+  const handleClickTaskItem = (e) => {
+    // console.log(e.currentTarget)
+  }
+
+  // タスクチェックボックス変化時
+  const onChangeTaskItem = (e) => {
+    console.log(e.currentTarget.closest('.task-item').dataset.id)
+    console.log(e.target.checked)
+    const id = e.currentTarget.closest('.task-item').dataset.id
+    const checked = e.target.checked
+    const newTask = [...task]
+    newTask[id].checked = checked
+    setTask(newTask)
+  }
+
   return (
     <div className="App">
       <div className="container-fluid fixed-top d-flex align-items-center header">.X.X.</div>
@@ -51,11 +67,11 @@ function App() {
         <ReactSortable list={task} setList={setTask} {...sortableOptions}>
           {task.map((item, index) => {
             return (
-              <div className="d-flex" key={index}>
+              <div className="d-flex task-item" key={index} onClick={handleClickTaskItem}>
                 <div className="color-label" style={{ backgroundColor: item.color }}></div>
                 <StyledTaskBody className="block">
                   <div className="d-flex align-items-center">
-                    <input type="checkbox" />
+                    <input type="checkbox" checked={item.checked} onChange={onChangeTaskItem} />
                     <div className="task-name">{item.task}</div>
                   </div>
                   <div className="my-handle">
