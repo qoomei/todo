@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import AddTask from './components/AddTask'
-import EditTask from './components/EditTask'
+import GoogleLogout from './GoogleLogout'
+import AddTask from './AddTask'
+import EditTask from './EditTask'
 import { Modal } from 'bootstrap/dist/js/bootstrap.esm.min.js'
 import { ReactSortable } from 'react-sortablejs'
 import styled from 'styled-components'
 import { AiOutlineMenu } from 'react-icons/ai'
-import './style.min.css'
+import '../style.min.css'
 
 const setVh = () => {
   const vh = window.innerHeight * 0.01
@@ -35,7 +36,7 @@ const sortableOptions = {
   handle: '.my-handle',
 }
 
-function App() {
+function Content(props) {
   const [task, setTask] = useState([])
   const [editTaskModalObj, setEditTaskModalObj] = useState(null)
 
@@ -86,8 +87,9 @@ function App() {
       <div className="container-fluid fixed-bottom d-flex align-items-center footer">.X.X.</div>
       <AddTask modalObj={editTaskModalObj} />
       <EditTask modalObj={editTaskModalObj} task={task} setTask={setTask} title="追加" />
+      <GoogleLogout account={props.account} setAccount={props.setAccount} />
     </div>
   )
 }
 
-export default App
+export default Content
