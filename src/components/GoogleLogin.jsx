@@ -1,8 +1,7 @@
 import logo from '../logo.svg'
 import '../App.css'
 
-import { db } from './firebaseConfig'
-import { collection, getDocs } from 'firebase/firestore'
+import { db } from './firebaseConfig' // dbは使っている
 import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider } from 'firebase/auth'
 import { useState, useEffect } from 'react'
 
@@ -60,18 +59,9 @@ function GoogleLogin(props) {
   //////////////////////////////////////////////////
   // アカウント情報取得
   const getAccount = async () => {
-    const colRef = collection(db, 'account')
-    getDocs(colRef).then((snapshot) => {
-      snapshot.forEach((document) => {
-        const doc = document.data()
-
-        for (let key of Object.keys(doc)) {
-          if (email === doc[key]) {
-            setAccount(document.id)
-          }
-        }
-      })
-    })
+    if (email !== null) {
+      setAccount(email)
+    }
   }
 
   //////////////////////////////////////////////////
