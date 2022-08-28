@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
-import GoogleLogout from './GoogleLogout'
-import AddTask from './AddTask'
-import EditTask from './EditTask'
 import { Modal } from 'bootstrap/dist/js/bootstrap.esm.min.js'
+import { db } from './firebaseConfig'
+import { doc, collection, query, setDoc, deleteDoc, orderBy, onSnapshot } from 'firebase/firestore'
 import { ReactSortable } from 'react-sortablejs'
 import styled from 'styled-components'
 import { AiOutlineMenu } from 'react-icons/ai'
+
+import GoogleLogout from './GoogleLogout'
+import AddTask from './AddTask'
+import EditTask from './EditTask'
+
 import '../style.min.css'
 
 const setVh = () => {
@@ -43,7 +47,44 @@ function Content(props) {
   useEffect(() => {
     const editTaskModal = document.getElementById('editTaskModal')
     setEditTaskModalObj(new Modal(editTaskModal))
+
+    getTasks()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // タスク読み込み
+  const getTasks = () => {
+    const colRef = collection(db, 'account', props.account, 'task1')
+    const q = query(colRef, orderBy('index'))
+    return onSnapshot(q, async (snapshot) => {
+      let taskData = []
+      await snapshot.forEach((document) => {
+        const doc = document.data()
+        taskData.push({ docid: document.id, index: doc.index, task: doc.task, color: doc.color, checked: doc.checked })
+      })
+      setTask(taskData)
+    })
+  }
+
+  // タスク更新
+  useEffect(() => {
+    task.forEach((item, index) => {
+      const docRef = doc(db, 'account', props.account, 'task1', item.docid)
+      setDoc(docRef, { index: index, task: item.task, color: item.color, checked: item.checked })
+    })
+  }, [task])
+
+  // タスク全削除
+  // const removeTask1 = async () => {
+  //   const colRef = collection(db, 'account', props.account, 'task1')
+  //   const q = query(colRef)
+  //   const querySnapshot = await getDocs(q)
+  //   querySnapshot.forEach(async (document) => {
+  //     const userDocumentRef = doc(db, 'account', props.account, 'task1', document.id)
+  //     await deleteDoc(userDocumentRef)
+  //   })
+  // }
 
   // タスククリック時
   const handleClickTaskItem = (e) => {
@@ -52,8 +93,6 @@ function Content(props) {
 
   // タスクチェックボックス変化時
   const onChangeTaskItem = (e) => {
-    console.log(e.currentTarget.closest('.task-item').dataset.id)
-    console.log(e.target.checked)
     const id = e.currentTarget.closest('.task-item').dataset.id
     const checked = e.target.checked
     const newTask = [...task]
@@ -86,7 +125,7 @@ function Content(props) {
       </div>
       <div className="container-fluid fixed-bottom d-flex align-items-center footer">.X.X.</div>
       <AddTask modalObj={editTaskModalObj} />
-      <EditTask modalObj={editTaskModalObj} task={task} setTask={setTask} title="追加" />
+      <EditTask modalObj={editTaskModalObj} account={props.account} task={task} setTask={setTask} title="追加" />
       <GoogleLogout account={props.account} setAccount={props.setAccount} />
     </div>
   )

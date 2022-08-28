@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
 import { CirclePicker } from 'react-color'
+import { db } from './firebaseConfig'
+import { addDoc, collection } from 'firebase/firestore'
 
 function EditTask(props) {
   // タスク名
@@ -35,11 +37,11 @@ function EditTask(props) {
       return
     }
 
-    props.setTask((prev) => {
-      const newTask = [...prev]
-      newTask.push({ task: taskName, color: color, checked: false })
-      return newTask
-    })
+    // DBに反映
+    const colRef = collection(db, 'account', props.account, 'task1')
+    addDoc(colRef, { index: props.task.length, task: taskName, color: color, checked: false })
+
+    // ダイアログを閉じる
     props.modalObj.hide()
   }
 
