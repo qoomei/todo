@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Modal } from 'bootstrap/dist/js/bootstrap.esm.min.js'
 import { db } from './firebaseConfig'
-import { doc, collection, query, setDoc, deleteDoc, orderBy, onSnapshot } from 'firebase/firestore'
+import { doc, collection, query, setDoc, orderBy, onSnapshot } from 'firebase/firestore'
 import { ReactSortable } from 'react-sortablejs'
 import styled from 'styled-components'
 import { AiOutlineMenu } from 'react-icons/ai'
@@ -9,8 +9,10 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import GoogleLogout from './GoogleLogout'
 import AddTask from './AddTask'
 import EditTask from './EditTask'
+import Footer from './Footer'
 
 import '../style.min.css'
+import ToTrash from './ToTrash'
 
 const setVh = () => {
   const vh = window.innerHeight * 0.01
@@ -43,10 +45,14 @@ const sortableOptions = {
 function Content(props) {
   const [task, setTask] = useState([])
   const [editTaskModalObj, setEditTaskModalObj] = useState(null)
+  const [toTrashModalObj, setToTrashModalObj] = useState(null)
 
   useEffect(() => {
     const editTaskModal = document.getElementById('editTaskModal')
     setEditTaskModalObj(new Modal(editTaskModal))
+
+    const toTrashModal = document.getElementById('toTrashModal')
+    setToTrashModalObj(new Modal(toTrashModal))
 
     getTasks()
 
@@ -73,6 +79,8 @@ function Content(props) {
       const docRef = doc(db, 'account', props.account, 'task1', item.docid)
       setDoc(docRef, { index: index, task: item.task, color: item.color, checked: item.checked })
     })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task])
 
   // タスク全削除
@@ -123,9 +131,10 @@ function Content(props) {
           })}
         </ReactSortable>
       </div>
-      <div className="container-fluid fixed-bottom d-flex align-items-center footer">.X.X.</div>
+      <Footer task={task} setTask={setTask} modalObj={toTrashModalObj} />
       <AddTask modalObj={editTaskModalObj} />
       <EditTask modalObj={editTaskModalObj} account={props.account} task={task} setTask={setTask} title="追加" />
+      <ToTrash modalObj={toTrashModalObj} />
       <GoogleLogout account={props.account} setAccount={props.setAccount} />
     </div>
   )
