@@ -3,11 +3,41 @@
 $color-qoomei: #AB5F39;
 $color-button: #0077ff; // ボタン背景色
 $color-main-bg: #FFE6C8;  // main背景色
+$color-link: #0d6efd;
+$color-link-hover: #0a58ca;
+$color-button: #0077ff; // ボタン背景色
+
 $height-header: 50px;
 $height-footer: 50px;
 
 body {
   background-color: $color-main-bg;
+}
+
+// Googleログイン
+button.google-login {
+  border: none;
+  background-color: transparent;
+  color: $color-link;
+  border-radius: 32px;
+  margin: 10px 0;
+  padding: 10px 20px;  
+
+  // リンクカラー
+  &:hover {
+    color: $color-link-hover;
+  }
+
+  // テキスト余白
+  span {
+    margin-left: 10px;
+  }
+
+  // タップ背景色
+  &.tap {
+    background-color: $color-button;
+    color: white;
+  }
 }
 
 // ヘッダー
