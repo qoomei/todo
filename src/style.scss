@@ -31,6 +31,22 @@ body {
   height: $height-footer;
   background-color: #C1272D;
   color: white;
+  box-shadow: 0 10px 25px 0 rgb(0 0 0 / 50%);
+  // user-select: none;  // 文字選択禁止
+
+  .menu {
+    height: $height-footer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    border-right: 1px solid #dee2e6;
+  }
+
+  div:last-child {
+    border: none;
+  }
 }
 
 // 追加アイコン
