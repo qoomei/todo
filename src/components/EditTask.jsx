@@ -1,21 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { CirclePicker } from 'react-color'
 import { db } from './firebaseConfig'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 
 function EditTask(props) {
   // タスク名
   const [taskName, setTaskName] = useState('')
   // color
   const [color, setColor] = useState('#f44336')
-  // submitボタン
-  const [submitButton] = useState(props.title)
   // 入力チェック
   const [validated, setValidated] = useState('')
 
   // ダイアログタイトル
-  const [title] = useState('項目の' + props.title)
+  const [title, setTitle] = useState('項目の' + props.title)
+
+  // タイトル
+  useEffect(() => {
+    setTitle('項目の' + props.title)
+  }, [props.title])
+
+  // ダイアログ更新
+  useEffect(() => {
+    if (props.title === '追加') {
+      setTaskName('')
+      setColor('#f44336')
+    } else {
+      const target = props.targetTask
+      setTaskName(target.task)
+      setColor(target.color)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.updateEditTask])
 
   // カラー選択
   const handleColor = (color) => {
@@ -38,8 +54,16 @@ function EditTask(props) {
     }
 
     // DBに反映
-    const colRef = collection(db, 'account', props.account, 'task1')
-    addDoc(colRef, { index: props.task.length, task: taskName, color: color, checked: false })
+    if (props.title === '追加') {
+      const colRef = collection(db, 'account', props.account, 'task1')
+      addDoc(colRef, { index: props.task.length, task: taskName, color: color, checked: false })
+    } else {
+      const docRef = doc(db, 'account', props.account, 'task1', props.targetTask.docid)
+      updateDoc(docRef, {
+        task: taskName,
+        color: color,
+      })
+    }
 
     // ダイアログを閉じる
     props.modalObj.hide()
@@ -91,7 +115,7 @@ function EditTask(props) {
                 閉じる
               </button>
               <button type="submit" className="btn btn-primary">
-                {submitButton}
+                保存
               </button>
             </div>
           </form>

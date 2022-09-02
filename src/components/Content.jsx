@@ -43,10 +43,20 @@ const sortableOptions = {
 }
 
 function Content(props) {
+  // タスク情報
   const [task, setTask] = useState([])
+  // 編集時のタイトル
+  const [editTitle, setEditTitle] = useState('追加')
+  // タスク編集ダイアログの更新
+  const [updateEditTask, setUpdateEditTask] = useState(0)
+  // 編集対象のタスク
+  const [targetTask, setTargetTask] = useState({})
+
+  // ダイアログのオブジェクト
   const [editTaskModalObj, setEditTaskModalObj] = useState(null)
   const [toTrashModalObj, setToTrashModalObj] = useState(null)
 
+  // ダイアログオブジェクト取得
   useEffect(() => {
     const editTaskModal = document.getElementById('editTaskModal')
     setEditTaskModalObj(new Modal(editTaskModal))
@@ -83,20 +93,13 @@ function Content(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task])
 
-  // タスク全削除
-  // const removeTask1 = async () => {
-  //   const colRef = collection(db, 'account', props.account, 'task1')
-  //   const q = query(colRef)
-  //   const querySnapshot = await getDocs(q)
-  //   querySnapshot.forEach(async (document) => {
-  //     const userDocumentRef = doc(db, 'account', props.account, 'task1', document.id)
-  //     await deleteDoc(userDocumentRef)
-  //   })
-  // }
-
   // タスククリック時
   const handleClickTaskItem = (e) => {
-    // console.log(e.currentTarget)
+    const id = e.currentTarget.dataset.id
+    setTargetTask(task[id])
+    setEditTitle('修正')
+    setUpdateEditTask((prev) => prev + 1)
+    editTaskModalObj.show()
   }
 
   // タスクチェックボックス変化時
@@ -132,8 +135,16 @@ function Content(props) {
         </ReactSortable>
       </div>
       <Footer modalObj={toTrashModalObj} task={task} setTask={setTask} />
-      <AddTask modalObj={editTaskModalObj} />
-      <EditTask modalObj={editTaskModalObj} account={props.account} task={task} setTask={setTask} title="追加" />
+      <AddTask modalObj={editTaskModalObj} setEditTitle={setEditTitle} setUpdateEditTask={setUpdateEditTask} />
+      <EditTask
+        modalObj={editTaskModalObj}
+        account={props.account}
+        task={task}
+        setTask={setTask}
+        title={editTitle}
+        updateEditTask={updateEditTask}
+        targetTask={targetTask}
+      />
       <ToTrash modalObj={toTrashModalObj} account={props.account} task={task} setTask={setTask} />
       <GoogleLogout account={props.account} setAccount={props.setAccount} />
     </div>
