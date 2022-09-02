@@ -131,10 +131,10 @@ function Content(props) {
           })}
         </ReactSortable>
       </div>
-      <Footer task={task} setTask={setTask} modalObj={toTrashModalObj} />
+      <Footer modalObj={toTrashModalObj} task={task} setTask={setTask} />
       <AddTask modalObj={editTaskModalObj} />
       <EditTask modalObj={editTaskModalObj} account={props.account} task={task} setTask={setTask} title="追加" />
-      <ToTrash modalObj={toTrashModalObj} />
+      <ToTrash modalObj={toTrashModalObj} account={props.account} task={task} setTask={setTask} />
       <GoogleLogout account={props.account} setAccount={props.setAccount} />
     </div>
   )
