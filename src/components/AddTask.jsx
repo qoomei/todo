@@ -2,6 +2,8 @@ import { AiOutlinePlus } from 'react-icons/ai'
 
 function AddStudent(props) {
   const handleClick = (e) => {
+    props.setEditTitle('追加')
+    props.setUpdateEditTask((prev) => prev + 1)
     props.modalObj.show()
   }
 
