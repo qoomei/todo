@@ -1,9 +1,30 @@
+import { db } from './firebaseConfig'
+import { doc, writeBatch } from 'firebase/firestore'
+
 function ToTrash(props) {
   // 削除する
   const handleTrash = (e) => {
     e.preventDefault()
     // ダイアログを閉じる
     props.modalObj.hide()
+
+    const batch = writeBatch(db)
+
+    // index振り直し
+    const updateTask = props.task.filter((item) => item.checked === false)
+    updateTask.forEach(function (item, index) {
+      const docRef = doc(db, 'account', props.account, 'task1', item.docid)
+      batch.update(docRef, { index: index })
+    })
+
+    // タスク削除
+    const deleteTask = props.task.filter((item) => item.checked === true)
+    deleteTask.forEach(function (item, index) {
+      const docRef = doc(db, 'account', props.account, 'task1', item.docid)
+      batch.delete(docRef)
+    })
+
+    batch.commit()
   }
 
   return (
