@@ -6,7 +6,7 @@ import { ReactSortable } from 'react-sortablejs'
 import styled from 'styled-components'
 import { AiOutlineMenu } from 'react-icons/ai'
 
-import GoogleLogout from './GoogleLogout'
+import Menu from './Menu'
 import AddTask from './AddTask'
 import EditTask from './EditTask'
 import Footer from './Footer'
@@ -53,11 +53,15 @@ function Content(props) {
   const [targetTask, setTargetTask] = useState({})
 
   // ダイアログのオブジェクト
+  const [menuModalObj, setMenuModalObj] = useState(null)
   const [editTaskModalObj, setEditTaskModalObj] = useState(null)
   const [toTrashModalObj, setToTrashModalObj] = useState(null)
 
   // ダイアログオブジェクト取得
   useEffect(() => {
+    const menuModal = document.getElementById('menuModal')
+    setMenuModalObj(new Modal(menuModal))
+
     const editTaskModal = document.getElementById('editTaskModal')
     setEditTaskModalObj(new Modal(editTaskModal))
 
@@ -111,9 +115,17 @@ function Content(props) {
     setTask(newTask)
   }
 
+  // メニュー
+  const handleMenu = () => {
+    menuModalObj.show()
+  }
+
   return (
     <div className="App">
-      <div className="container-fluid fixed-top d-flex align-items-center header">.X.X.</div>
+      <div className="container-fluid fixed-top d-flex align-items-center header">
+        <AiOutlineMenu size={32} color={'white'} onClick={handleMenu} />
+        .X.X.
+      </div>
       <div className="container fixed-top main">
         <ReactSortable list={task} setList={setTask} {...sortableOptions}>
           {task.map((item, index) => {
@@ -135,6 +147,7 @@ function Content(props) {
         </ReactSortable>
       </div>
       <Footer modalObj={toTrashModalObj} task={task} setTask={setTask} />
+      <Menu modalObj={menuModalObj} setAccount={props.setAccount} />
       <AddTask modalObj={editTaskModalObj} setEditTitle={setEditTitle} setUpdateEditTask={setUpdateEditTask} />
       <EditTask
         modalObj={editTaskModalObj}
@@ -146,7 +159,6 @@ function Content(props) {
         targetTask={targetTask}
       />
       <ToTrash modalObj={toTrashModalObj} account={props.account} task={task} setTask={setTask} />
-      <GoogleLogout account={props.account} setAccount={props.setAccount} />
     </div>
   )
 }
