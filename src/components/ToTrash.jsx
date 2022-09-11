@@ -13,14 +13,14 @@ function ToTrash(props) {
     // index振り直し
     const updateTask = props.task.filter((item) => item.checked === false)
     updateTask.forEach(function (item, index) {
-      const docRef = doc(db, 'account', props.account, 'task1', item.docid)
+      const docRef = doc(db, 'account', props.account, props.category, item.docid)
       batch.update(docRef, { index: index })
     })
 
     // タスク削除
     const deleteTask = props.task.filter((item) => item.checked === true)
     deleteTask.forEach(function (item, index) {
-      const docRef = doc(db, 'account', props.account, 'task1', item.docid)
+      const docRef = doc(db, 'account', props.account, props.category, item.docid)
       batch.delete(docRef)
     })
 
