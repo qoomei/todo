@@ -108,8 +108,14 @@ function Content(props) {
     editTaskModalObj.show()
   }
 
+  // タスクチェックボックスクリック時
+  const onClickCheckBox = (e) => {
+    // イベントバブリングを抑止
+    e.stopPropagation()
+  }
+
   // タスクチェックボックス変化時
-  const onChangeTaskItem = (e) => {
+  const onChangeCheckBox = (e) => {
     const id = e.currentTarget.closest('.task-item').dataset.id
     const checked = e.target.checked
     const newTask = [...task]
@@ -136,7 +142,12 @@ function Content(props) {
                 <div className="color-label" style={{ backgroundColor: item.color }}></div>
                 <StyledTaskBody className="block">
                   <div className="d-flex align-items-center">
-                    <input type="checkbox" checked={item.checked} onChange={onChangeTaskItem} />
+                    <input
+                      type="checkbox"
+                      checked={item.checked}
+                      onClick={onClickCheckBox}
+                      onChange={onChangeCheckBox}
+                    />
                     <div className="task-name">{item.task}</div>
                   </div>
                   <div className="my-handle">
