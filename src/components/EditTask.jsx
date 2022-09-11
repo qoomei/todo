@@ -55,10 +55,10 @@ function EditTask(props) {
 
     // DBに反映
     if (props.title === '追加') {
-      const colRef = collection(db, 'account', props.account, 'task1')
+      const colRef = collection(db, 'account', props.account, props.category)
       addDoc(colRef, { index: props.task.length, task: taskName, color: color, checked: false })
     } else {
-      const docRef = doc(db, 'account', props.account, 'task1', props.targetTask.docid)
+      const docRef = doc(db, 'account', props.account, props.category, props.targetTask.docid)
       updateDoc(docRef, {
         task: taskName,
         color: color,

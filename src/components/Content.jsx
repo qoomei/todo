@@ -43,6 +43,8 @@ const sortableOptions = {
 }
 
 function Content(props) {
+  // カテゴリー
+  const [category, setCategory] = useState('task1')
   // タスク情報
   const [task, setTask] = useState([])
   // 編集時のタイトル
@@ -75,7 +77,7 @@ function Content(props) {
 
   // タスク読み込み
   const getTasks = () => {
-    const colRef = collection(db, 'account', props.account, 'task1')
+    const colRef = collection(db, 'account', props.account, category)
     const q = query(colRef, orderBy('index'))
     return onSnapshot(q, async (snapshot) => {
       let taskData = []
@@ -90,7 +92,7 @@ function Content(props) {
   // タスク更新
   useEffect(() => {
     task.forEach((item, index) => {
-      const docRef = doc(db, 'account', props.account, 'task1', item.docid)
+      const docRef = doc(db, 'account', props.account, category, item.docid)
       setDoc(docRef, { index: index, task: item.task, color: item.color, checked: item.checked })
     })
 
@@ -152,13 +154,14 @@ function Content(props) {
       <EditTask
         modalObj={editTaskModalObj}
         account={props.account}
+        category={category}
         task={task}
         setTask={setTask}
         title={editTitle}
         updateEditTask={updateEditTask}
         targetTask={targetTask}
       />
-      <ToTrash modalObj={toTrashModalObj} account={props.account} task={task} setTask={setTask} />
+      <ToTrash modalObj={toTrashModalObj} account={props.account} category={category} task={task} setTask={setTask} />
     </div>
   )
 }
