@@ -45,6 +45,10 @@ button.google-login {
   height: $height-header;
   background-color: $color-qoomei;
   color: white;
+
+  .title {
+    margin-left: 10px;
+  }
 }
 
 // メイン

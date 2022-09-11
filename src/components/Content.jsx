@@ -42,9 +42,16 @@ const sortableOptions = {
   handle: '.my-handle',
 }
 
+// カテゴリーリスト
+const listCategory = {
+  shop: '買い物リスト',
+  check: 'チェックリスト',
+  belongings: '持ち物リスト',
+}
+
 function Content(props) {
   // カテゴリー
-  const [category, setCategory] = useState('task1')
+  const [category, setCategory] = useState('shop')
   // タスク情報
   const [task, setTask] = useState([])
   // 編集時のタイトル
@@ -70,10 +77,15 @@ function Content(props) {
     const toTrashModal = document.getElementById('toTrashModal')
     setToTrashModalObj(new Modal(toTrashModal))
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // カテゴリー変化時
+  useEffect(() => {
     getTasks()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [category])
 
   // タスク読み込み
   const getTasks = () => {
@@ -132,7 +144,7 @@ function Content(props) {
     <div className="App">
       <div className="container-fluid fixed-top d-flex align-items-center header">
         <AiOutlineMenu size={32} color={'white'} onClick={handleMenu} />
-        .X.X.
+        <div className="title">{listCategory[category]}</div>
       </div>
       <div className="container fixed-top main">
         <ReactSortable list={task} setList={setTask} {...sortableOptions}>
@@ -160,7 +172,12 @@ function Content(props) {
         </ReactSortable>
       </div>
       <Footer modalObj={toTrashModalObj} task={task} setTask={setTask} />
-      <Menu modalObj={menuModalObj} setAccount={props.setAccount} />
+      <Menu
+        modalObj={menuModalObj}
+        setAccount={props.setAccount}
+        setCategory={setCategory}
+        listCategory={listCategory}
+      />
       <AddTask modalObj={editTaskModalObj} setEditTitle={setEditTitle} setUpdateEditTask={setUpdateEditTask} />
       <EditTask
         modalObj={editTaskModalObj}

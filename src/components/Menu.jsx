@@ -9,8 +9,9 @@ function Menu(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleMenu = (menu) => {
-    console.log(menu)
+  // カテゴリー変化時
+  const handleMenu = (category) => {
+    props.setCategory(category)
   }
 
   const handleLogout = () => {
@@ -24,9 +25,9 @@ function Menu(props) {
         <div className="modal-content">
           <div className="modal-body">
             <div className="menu mb-3">
-              <MakeMenu handleMenu={handleMenu} label={'買い物リスト'} handle={'shop'} />
-              <MakeMenu handleMenu={handleMenu} label={'チェックリスト'} handle={'check'} />
-              <MakeMenu handleMenu={handleMenu} label={'持ち物リスト'} handle={'belongings'} />
+              <MakeMenu handleMenu={handleMenu} label={props.listCategory.shop} handle={'shop'} />
+              <MakeMenu handleMenu={handleMenu} label={props.listCategory.check} handle={'check'} />
+              <MakeMenu handleMenu={handleMenu} label={props.listCategory.belongings} handle={'belongings'} />
               <button type="button" className="btn btn-link" data-bs-dismiss="modal" onClick={handleLogout}>
                 ログアウト
               </button>
